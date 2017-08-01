@@ -33,6 +33,7 @@ def cleanscreen():
 while PLAYING:
     cleanscreen()
 
+    # Make sure we're using Python 3+
     if sys.version_info < (3, 0):
         print(
             Colour.RED +
@@ -40,38 +41,65 @@ while PLAYING:
             Colour.END)
         sys.exit(1)
 
+    # Define our actions
     SPLIT = Colour.BLUE + Colour.BOLD + "SPLIT" + Colour.END
     HIT = Colour.GREEN + Colour.BOLD + "HIT" + Colour.END
     STAND = Colour.YELLOW + Colour.BOLD + "STAND" + Colour.END
     DOUBLE = Colour.PURPLE + Colour.BOLD + "DOUBLE" + Colour.END
 
-    DEALER = int(input('What is the dealers card? (Ace = 1)\n'))
+    # Get inputs
+    T1 = True
+    T2 = False
+    T3 = False
 
-    while DEALER > 10 or DEALER < 1:
-        DEALER = int(
-            input(
-                Colour.RED +
-                "Enter a number between 1 and 10. Ace = 1.\n" +
-                Colour.END))
+    while T1:
+        try:
+            DEALER = int(
+                input('What is the dealer\'s card? (Ace = 1. J,Q,K = 10.)\n'))
+            while DEALER not in range(1, 11):
+                DEALER = input(
+                    Colour.RED +
+                    "Enter a number between 1 and 10. (Ace = 1; J,Q,K = 10)\n" +
+                    Colour.END)
+            cleanscreen()
+            T1 = False
+            T2 = True
+        except ValueError:
+            cleanscreen()
+            print(Colour.RED + "Please only use numbers.\n" + Colour.END)
 
-    CARD1 = int(input('What is your first card? (Ace = 1)\n'))
+    while T2:
+        try:
+            CARD1 = int(
+                input('What is your first card? (Ace = 1; J,Q,K = 10)\n'))
+            while CARD1 not in range(1, 11):
+                CARD1 = input(
+                    Colour.RED +
+                    "Enter a number between 1 and 10. (Ace = 1; J,Q,K = 10)\n" +
+                    Colour.END)
+            cleanscreen()
+            T2 = False
+            T3 = True
+        except ValueError:
+            cleanscreen()
+            print(Colour.RED + "Please only use numbers.\n" + Colour.END)
 
-    while CARD1 > 10 or CARD1 < 1:
-        CARD1 = int(
-            input(
-                Colour.RED +
-                "Enter a number between 1 and 10. Ace = 1.\n" +
-                Colour.END))
+    while T3:
+        try:
+            CARD2 = int(
+                input('What is your second card? (Ace = 1; J,Q,K = 10)\n'))
+            while CARD2 not in range(1, 11):
+                CARD2 = input(
+                    Colour.RED +
+                    "Enter a number between 1 and 10. (Ace = 1; J,Q,K = 10)\n" +
+                    Colour.END)
+            cleanscreen()
+            T3 = False
+        except ValueError:
+            cleanscreen()
+            print(Colour.RED + "Please only use numbers.\n" + Colour.END)
 
-    CARD2 = int(input('What is your second card? (Ace = 1)\n'))
-
-    while CARD2 > 10 or CARD2 < 1:
-        CARD2 = int(
-            input(
-                Colour.RED +
-                "Enter a number between 1 and 10. Ace = 1.\n" +
-                Colour.END))
-
+    # Decide result
     cleanscreen()
     print(
         Colour.DARKCYAN +
@@ -85,29 +113,29 @@ while PLAYING:
     if CARD1 == 1 or CARD2 == 1:
         if CARD1 == CARD2:
             print(SPLIT)
-        elif CARD1 == 2 or CARD1 == 3 or CARD2 == 2 or CARD2 == 3:
-            if DEALER == 5 or DEALER == 6:
+        elif CARD1 in (2, 3) or CARD2 in (2, 3):
+            if DEALER in (5, 6):
                 print(DOUBLE)
             else:
                 print(HIT)
-        elif CARD1 == 4 or CARD1 == 5 or CARD2 == 4 or CARD2 == 5:
-            if DEALER >= 4 and DEALER <= 6:
+        elif CARD1 in (4, 5) or CARD2 in (4, 5):
+            if DEALER in range(4, 7):
                 print(DOUBLE)
             else:
                 print(HIT)
         elif CARD1 == 6 or CARD2 == 6:
-            if DEALER >= 3 and DEALER <= 6:
+            if DEALER in range(3, 7):
                 print(DOUBLE)
             else:
                 print(HIT)
         elif CARD1 == 7 or CARD2 == 7:
-            if DEALER >= 3 and DEALER <= 6:
+            if DEALER in range(3, 7):
                 print(DOUBLE)
-            elif DEALER == 2 or DEALER == 7 or DEALER == 8:
+            elif DEALER in (2, 7, 8):
                 print(STAND)
             else:
                 print(HIT)
-        elif CARD1 >= 8 and CARD1 <= 10 or CARD2 >= 8 and CARD2 <= 10:
+        elif CARD1 in range(8, 11) or CARD2 in range(8, 11):
             print(STAND)
 
     # Pairs
@@ -116,59 +144,59 @@ while PLAYING:
             print(SPLIT)
         elif CARD1 == 10:
             print(STAND)
-        elif CARD1 == 2 or CARD1 == 3 or CARD1 == 7:
-            if DEALER >= 2 or DEALER <= 7:
+        elif CARD1 in (2, 3, 8):
+            if DEALER in range(2, 8):
                 print(SPLIT)
             else:
                 print(HIT)
         elif CARD1 == 4:
-            if DEALER == 5 or DEALER == 6:
+            if DEALER in (5, 6):
                 print(SPLIT)
             else:
                 print(HIT)
         elif CARD1 == 5:
-            if DEALER >= 2 and DEALER <= 9:
+            if DEALER in range(2, 10):
                 print(DOUBLE)
             else:
                 print(HIT)
         elif CARD1 == 6:
-            if DEALER >= 2 and DEALER <= 6:
+            if DEALER in range(2, 7):
                 print(SPLIT)
             else:
                 print(HIT)
         elif CARD1 == 9:
-            if DEALER == 7 or DEALER == 10 or DEALER == 1:
+            if DEALER in (1, 7, 10):
                 print(STAND)
             else:
                 print(SPLIT)
 
     # Other
-    elif CARDX >= 5 and CARDX <= 8:
+    elif CARDX in range(5, 9):
         print(HIT)
     elif CARDX >= 17:
         print(STAND)
-    elif CARDX >= 13 and CARDX <= 16:
-        if DEALER >= 2 and DEALER <= 6:
+    elif CARDX in range(13, 17):
+        if DEALER in range(2, 7):
             print(STAND)
         else:
             print(HIT)
     elif CARDX == 9:
-        if DEALER >= 3 and DEALER <= 6:
+        if DEALER in range(3, 7):
             print(DOUBLE)
         else:
             print(HIT)
     elif CARDX == 10:
-        if DEALER >= 3 and DEALER <= 9:
+        if DEALER in range(3, 10):
             print(DOUBLE)
         else:
             print(HIT)
     elif CARDX == 11:
-        if DEALER >= 3 and DEALER <= 10:
+        if DEALER in range(3, 11):
             print(DOUBLE)
         else:
             print(HIT)
     elif CARDX == 12:
-        if DEALER >= 4 and DEALER <= 6:
+        if DEALER in range(4, 7):
             print(STAND)
         else:
             print(HIT)
@@ -177,7 +205,7 @@ while PLAYING:
     else:
         print("ERROR!")
 
-    REPEAT = input('\nRepeat? y/n\n').lower()
+    REPEAT = input('\nAnother hand? y/n\n').lower()
     if REPEAT != "y":
         cleanscreen()
         PLAYING = False
@@ -187,6 +215,6 @@ while PLAYING:
 __author__ = "Jinco"
 __copyright__ = "Copyright 2017, Jinco"
 __license__ = "GPL-3.0"
-__version__ = "0.0.3"
+__version__ = "0.0.4"
 __maintainer__ = "Jinco"
 __status__ = "Development"
