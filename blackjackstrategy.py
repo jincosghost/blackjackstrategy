@@ -36,8 +36,8 @@ while PLAYING:
     if sys.version_info < (3, 0):
         print(
             Colour.RED +
-            "This app requires Python 3! Please reload with: python3 blackjackstrategy.py"
-            + Colour.END)
+            "This app requires Python 3! Please reload with: python3 blackjackstrategy.py" +
+            Colour.END)
         sys.exit(1)
 
     SPLIT = Colour.BLUE + Colour.BOLD + "SPLIT" + Colour.END
@@ -86,12 +86,12 @@ while PLAYING:
         if CARD1 == CARD2:
             print(SPLIT)
         elif CARD1 == 2 or CARD1 == 3 or CARD2 == 2 or CARD2 == 3:
-            if DEALER == 5 or 6:
+            if DEALER == 5 or DEALER == 6:
                 print(DOUBLE)
             else:
                 print(HIT)
         elif CARD1 == 4 or CARD1 == 5 or CARD2 == 4 or CARD2 == 5:
-            if DEALER == 4 or 5 or 6:
+            if DEALER >= 4 and DEALER <= 6:
                 print(DOUBLE)
             else:
                 print(HIT)
@@ -103,7 +103,7 @@ while PLAYING:
         elif CARD1 == 7 or CARD2 == 7:
             if DEALER >= 3 and DEALER <= 6:
                 print(DOUBLE)
-            elif DEALER == 2 or 7 or 8:
+            elif DEALER == 2 or DEALER == 7 or DEALER == 8:
                 print(STAND)
             else:
                 print(HIT)
